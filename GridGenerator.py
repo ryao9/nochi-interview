@@ -41,8 +41,8 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    #board = update_Board(board)
-                    board = randomize_Board()
+                    board = update_Board(board)
+                    #board = randomize_Board()
                     drawBoard(board)
 
         pygame.display.flip()
@@ -74,6 +74,7 @@ def drawBoard(board):
     pygame.draw.rect(gameDisplay, WHITE, [size, size, BoardLength * size, BoardLength * size], 1)
 
 
+
 def randomize_Board():
     board = []
     counter = 1
@@ -89,10 +90,38 @@ def randomize_Board():
     return board
 
 def update_Board(board):
+    board = []
     for r in range(0, BoardLength):
+        column = []
         for c in range(0, BoardLength):
+            num = count_Alive(r,c,board);
             if(num >=2 & num <= 3):
-                board[r][c] = 1 - board[r][c];
+                if board[r][c] == 0:
+                    column.append(1)
+                if board[r][c] == 1:
+                    column.append(0)
+
+    return board
+
+def count_Alive(row, column, board):
+    total = 0
+    if column - 1 >= 0:
+        total += board[row][column - 1]
+    if column + 1 < BoardLength:
+        total += board[row][column + 1]
+    if row - 1 >= 0:
+        total += board[row - 1][column]
+    if row + 1 < BoardLength:
+        total += board[row + 1][column]
+    if row + 1 < BoardLength & column - 1 >= 0:
+        total += board[row + 1][column - 1]
+    if row - 1 >= 0 & column - 1 >= 0:
+        total += board[row - 1][column - 1]
+    if row + 1 < BoardLength & column + 1 < BoardLength:
+        total += board[row + 1][column + 1]
+    #if row - 1 >= 1 & column + 1 < BoardLength:
+        #total += board[row - 1][column + 1]
+    return total
 
 
 def makeText(text, color, bgcolor, top, left):

@@ -13,10 +13,13 @@ import random
 
 pygame.init()
 
+WHITE = pygame.Color(255, 255, 255)
+BLACK = pygame.Color(0, 0, 0)
+
 size = (700, 500)
 board_size = (700, 400)
 screen = pygame.display.set_mode(size)
-screen.fill(pygame.Color(255, 255, 255))
+screen.fill(WHITE)
  
 # Loop until the user clicks the close button.
 done = False
@@ -67,11 +70,11 @@ def display_board(board):
     for r in range(rows):
         for c in range(columns):
             if board[r][c] == 1:
-                pygame.draw.rect(screen, pygame.Color(255, 255, 255), (r * cell_width, c * cell_height, cell_width, cell_height))
-                pygame.draw.rect(screen, pygame.Color(0, 0, 0), (r * cell_width, c * cell_height, cell_width, cell_height), 1)
+                pygame.draw.rect(screen, BLACK, (r * cell_width, c * cell_height, cell_width, cell_height))
+                pygame.draw.rect(screen, WHITE, (r * cell_width, c * cell_height, cell_width, cell_height), 1)
             else:  
-                pygame.draw.rect(screen, pygame.Color(0, 0, 0), (r * cell_width, c * cell_height, cell_width, cell_height))
-                pygame.draw.rect(screen, pygame.Color(255, 255, 255), (r * cell_width, c * cell_height, cell_width, cell_height), 1)
+                pygame.draw.rect(screen, WHITE, (r * cell_width, c * cell_height, cell_width, cell_height))
+                pygame.draw.rect(screen, BLACK, (r * cell_width, c * cell_height, cell_width, cell_height), 1)
         
 def update_display(position, board):
     row = position[0]
@@ -79,15 +82,15 @@ def update_display(position, board):
     
     board[row][column] = (board[row][column] + 1 ) % 2    
     
-    cell_width = board_size[0] / columns
-    cell_height = board_size[1] / rows
+    cell_width = board_size[0] / len(board)
+    cell_height = board_size[1] / len(board[0])
     
     if board[row][column] == 1:
-        pygame.draw.rect(screen, pygame.Color(255, 255, 255), (r * cell_width, c * cell_height, cell_width, cell_height))
-        pygame.draw.rect(screen, pygame.Color(0, 0, 0), (r * cell_width, c * cell_height, cell_width, cell_height), 1)
+        pygame.draw.rect(screen, BLACK, (row * cell_width, column * cell_height, cell_width, cell_height))
+        pygame.draw.rect(screen, WHITE, (row * cell_width, column * cell_height, cell_width, cell_height), 1)
     else:  
-        pygame.draw.rect(screen, pygame.Color(0, 0, 0), (r * cell_width, c * cell_height, cell_width, cell_height))
-        pygame.draw.rect(screen, pygame.Color(255, 255, 255), (r * cell_width, c * cell_height, cell_width, cell_height), 1)
+        pygame.draw.rect(screen, WHITE, (row * cell_width, column * cell_height, cell_width, cell_height))
+        pygame.draw.rect(screen, BLACK, (row * cell_width, column * cell_height, cell_width, cell_height), 1)
 
 # Updates board with which cells are alive and dead after next gen
 def next_gen(board):
@@ -103,18 +106,18 @@ def next_gen(board):
     
     for r in range(rows):
         for c in range(columns):
-            num_neighbors = alive_nieghbors((r, c), board)
-            if board[r][c] == 1 and num_neighbors not in [2, 3]
+            num_neighbors = alive_neighbors((r, c), board)
+            if board[r][c] == 1 and num_neighbors not in [2, 3]:
                 new_board[r][c] = 0
                 update_display((r, c), board)
             elif board[r][c] == 0 and num_neighbors == 3:
                 new_board[r][c] = 1
-                update_display(r, c), board)
+                update_display((r, c), board)
     return new_board
 
 
 # -------- Main Program Loop -----------
-board = randomize_board(5, 5)
+board = blank_board(5, 5)
 display_board(board)
 
 while not done:

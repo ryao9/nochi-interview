@@ -104,15 +104,15 @@ def next_gen(board):
         for c in range(columns):
             num_neighbors = alive_neighbors((r, c), board)
             if board[r][c] == 1 and num_neighbors not in [2, 3]:
-                print("first if")
+                #print("first if")
                 row.append(0)
                 #update_display((r, c), board)
             elif board[r][c] == 0 and num_neighbors == 3:
-                print("second if")
+                #print("second if")
                 row.append(1)
                 #update_display((r, c), board)
             else:
-                print("else")
+                #print("else")
                 row.append(board[r][c])
         new_board.append(row)
     return new_board
@@ -122,23 +122,30 @@ def next_gen(board):
 board = randomize_board(5, 5)
 display_board(board)
 
+pygame.draw.rect(screen, pygame.Color(0, 255, 0), (30, 420, 80, 40))
+pygame.draw.rect(screen, pygame.Color(0, 255, 0), (230, 420, 80, 40))
+pygame.draw.rect(screen, pygame.Color(0, 255, 0), (430, 420, 80, 40))
+
 while not done:
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        if event.type == pygame.KEYDOWN:
+            print("key pressed")
+            old_board = board
+            board = next_gen(old_board)
+            display_board(board)
+            print(board)
     # --- Game logic should go here
-    old_board = board
-    board = next_gen(old_board)
-    display_board(board)
-    print(board)
+
     # --- Screen-clearing code goes here
  
  
     # If you want a background image, replace this clear with blit'ing the
     # background image.
     # --- Drawing code should go here
- 
+    
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  

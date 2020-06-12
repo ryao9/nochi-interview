@@ -122,21 +122,28 @@ def next_gen(board):
 board = randomize_board(5, 5)
 display_board(board)
 
-pygame.draw.rect(screen, pygame.Color(0, 255, 0), (30, 420, 80, 40))
-pygame.draw.rect(screen, pygame.Color(0, 255, 0), (230, 420, 80, 40))
-pygame.draw.rect(screen, pygame.Color(0, 255, 0), (430, 420, 80, 40))
+step_button_loc = (30, 420)
+reset_loc = (600, 420)
+pygame.draw.rect(screen, pygame.Color(0, 255, 0), (step_button_loc[0], step_button_loc[1], 80, 40))
+pygame.draw.rect(screen, pygame.Color(0, 255, 0), (reset_loc[0], reset_loc[1], 80, 40))
+#pygame.draw.rect(screen, pygame.Color(0, 255, 0), (430, 420, 80, 40))
 
 while not done:
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-        if event.type == pygame.KEYDOWN:
-            print("key pressed")
-            old_board = board
-            board = next_gen(old_board)
-            display_board(board)
-            print(board)
+        if event.type == pygame.MOUSEBUTTONUP:
+            print("mouse pressed")    
+            pos = pygame.mouse.get_pos()
+            if abs(pos[0] - step_button_loc[0]) <= 80 and abs(pos[1] - step_button_loc[1]) <= 40:
+                old_board = board
+                board = next_gen(old_board)
+                display_board(board)
+            if abs(pos[0] - reset_loc[0]) <= 80 and abs(pos[1] - reset_loc[1]) <= 40:
+                board = randomize_board(5, 5)
+                display_board(board)
+        
     # --- Game logic should go here
 
     # --- Screen-clearing code goes here

@@ -98,26 +98,28 @@ def next_gen(board):
     columns = len(board[0])
     
     new_board = []
+    
     for r in range(rows):
         row = []
         for c in range(columns):
-            row.append(0)
-        new_board.append(row)
-    
-    for r in range(rows):
-        for c in range(columns):
             num_neighbors = alive_neighbors((r, c), board)
             if board[r][c] == 1 and num_neighbors not in [2, 3]:
-                new_board[r][c] = 0
-                update_display((r, c), board)
+                print("first if")
+                row.append(0)
+                #update_display((r, c), board)
             elif board[r][c] == 0 and num_neighbors == 3:
-                new_board[r][c] = 1
-                update_display((r, c), board)
+                print("second if")
+                row.append(1)
+                #update_display((r, c), board)
+            else:
+                print("else")
+                row.append(board[r][c])
+        new_board.append(row)
     return new_board
 
 
 # -------- Main Program Loop -----------
-board = blank_board(5, 5)
+board = randomize_board(5, 5)
 display_board(board)
 
 while not done:
@@ -126,7 +128,10 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
     # --- Game logic should go here
-    next_gen(board)
+    old_board = board
+    board = next_gen(old_board)
+    display_board(board)
+    print(board)
     # --- Screen-clearing code goes here
  
  
